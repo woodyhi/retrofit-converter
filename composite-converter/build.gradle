@@ -3,15 +3,6 @@ plugins {
     id 'maven'
 }
 
-group 'com.github.woodyhi.retrofit-converter'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation('com.squareup.retrofit2:retrofit:2.5.0')
     implementation 'com.squareup.okhttp3:okhttp:3.14.1'
