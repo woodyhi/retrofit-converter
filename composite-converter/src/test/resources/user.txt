@@ -1,0 +1,5 @@
+{
+    "name":"Linkin Park",
+    "sex": "male",
+    "age": 100
+}

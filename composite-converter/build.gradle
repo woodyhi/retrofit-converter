@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group 'com.woodyhi'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation('com.squareup.retrofit2:retrofit:2.5.0')
+    implementation 'com.squareup.okhttp3:okhttp:3.14.1'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:3.14.1'
+    testImplementation 'com.squareup.okhttp3:logging-interceptor:3.14.1'
+    testImplementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    testImplementation 'com.squareup.retrofit2:converter-simplexml:2.5.0'
+    testImplementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
+    testImplementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
+    testImplementation 'io.reactivex.rxjava2:rxjava:2.2.8'
+}
