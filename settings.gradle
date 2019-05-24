@@ -1,3 +1,4 @@
 rootProject.name = 'retrofit-converter'
 include 'composite-converter'
+include 'testart'
 
