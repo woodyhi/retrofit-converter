@@ -1,11 +1,12 @@
 plugins {
     id 'java'
+    id 'maven'
 }
 
-group 'com.woodyhi'
-version '1.0-SNAPSHOT'
+group 'com.github.woodyhi.retrofit-converter'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
