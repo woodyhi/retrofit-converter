@@ -17,7 +17,7 @@ allprojects {
 Step 2. Add the dependency
 ```
 dependencies {
-        implementation 'com.github.woodyhi.retrofit-extend:composite-converter:0.2.0'
+        implementation 'com.github.woodyhi.retrofit-converter:composite-converter:0.1.1'
 }
 ```
 
