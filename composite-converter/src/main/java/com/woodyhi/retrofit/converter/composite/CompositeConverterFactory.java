@@ -12,7 +12,10 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 
 /**
- * 组合转换工厂，使用注解指定转换工厂来转换 [请求体] [响应结果]，默认为GsonConverterFactory
+ * 一个可以混用的转换工厂，使用{@link #create(Converter.Factory f)}设置默认工厂，并且可使用注解动态设置转换工厂处理[请求体]、[响应结果]
+ * <pre>
+ *     eg: CompositeConverterFactory.create(GsonConveterFactory.create())
+ * </pre>
  *
  * @author June.C
  * @date 2019-05-22

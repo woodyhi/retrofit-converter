@@ -17,7 +17,7 @@ allprojects {
 Step 2. Add the dependency
 ```
 dependencies {
-        implementation 'com.github.woodyhi.retrofit-converter:composite-converter:0.1.2'
+    implementation 'com.github.woodyhi.retrofit-converter:composite-converter:0.1.3'
 }
 ```
 
@@ -56,7 +56,6 @@ public interface ApiService {
     @ResponseConverter(ScalarsConverterFactory.class)
     @POST("xml")
     Observable<String> sendUserXml(@Body User user);
-
 }
 ```
 `@RequestConverter` 指定请求体的转换工厂，`@ResponseConverter` 指定结果的转换工厂，可以不加注释使用默认转换工厂
