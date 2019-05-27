@@ -16,3 +16,5 @@ dependencies {
     testImplementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     testImplementation 'io.reactivex.rxjava2:rxjava:2.2.8'
 }
+
+apply from: '../gradle/publish-to-bintray.gradle'

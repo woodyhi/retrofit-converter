@@ -1,5 +1,17 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
 
-group 'com.github.woodyhi.retrofit-converter'
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+    }
+}
+
+
+group = GROUP
+version = VERSION_NAME
 
 
 allprojects {
@@ -9,6 +21,7 @@ allprojects {
 
     repositories {
         mavenCentral()
+        jcenter()
     }
 
     dependencies {

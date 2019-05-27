@@ -11,7 +11,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * 在请求方法上设置请求体转换工厂
- * @auth June.C
+ * @author June.C
  * @date 2019/05/23
  */
 

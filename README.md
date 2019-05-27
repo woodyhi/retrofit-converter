@@ -1,24 +1,14 @@
+[ ![Download](https://api.bintray.com/packages/june/woodyhi/composite-converter/images/download.svg?version=0.1.3) ](https://bintray.com/june/woodyhi/composite-converter/0.1.3/link)
+
 # retrofit-converter
 
 
 ## module composite-converter 说明
 
-Add it in your root build.gradle at the end of repositories:
+#### Gradle依赖:
 
 ```
-allprojects {
-	repositories {
-		...
-		maven { url 'https://jitpack.io' }
-	}
-}
-```
-
-Step 2. Add the dependency
-```
-dependencies {
-    implementation 'com.github.woodyhi.retrofit-converter:composite-converter:0.1.3'
-}
+implementation 'com.github.woodyhi.retrofit-converter:composite-converter:0.1.3'
 ```
 
 

@@ -1,0 +1,74 @@
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+group GROUP
+version VERSION_NAME
+def artifact_Id = project.name
+
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8" // 中文编码问题
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = "UTF-8" // 中文注释编码
+    options.tags = ["date"] // 自定义标签
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+publishing {
+    publications {
+        // 定义名为mavenJava
+        MyPublication(MavenPublication) {
+            if (plugins.hasPlugin('war')) {
+                from components.web
+            } else {
+                from components.java
+            }
+
+            artifact sourcesJar
+            artifact javadocJar
+
+            groupId this.group
+            version this.version
+            artifactId artifact_Id
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? bintrayUser : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? bintrayApiKey : System.getenv('BINTRAY_API_KEY')
+    publications = ['MyPublication']
+    
+    dryRun = false // [默认:false] 如果true则不会上传
+    publish = true //[Default: false] 上传后是否发布
+    override = true //[Default: false] Whether to override version artifacts already published
+
+    pkg {
+        repo = 'woodyhi' // 仓库名 在bintray.com创建的仓库，指定上传到哪个仓库
+        name = 'composite-converter' // 项目名称
+        description = "specify converter factory via annotation on request method"
+//        websiteUrl = 'https://github.com/bintray/bintray-examples'
+//        issueTrackerUrl = 'https://github.com/bintray/bintray-examples/issues'
+        vcsUrl = 'https://github.com/woodyhi/retrofit-converter.git'
+        labels = ['retrofit', 'converter']
+        publicDownloadNumbers = true
+        licenses = ['Apache-2.0']
+        version {
+            name = this.version
+            desc = "${project.name}-${this.version}"
+            released = new Date()
+            vcsTag = this.version
+        }
+    }
+}

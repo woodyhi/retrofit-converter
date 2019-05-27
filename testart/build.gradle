@@ -5,4 +5,5 @@ plugins {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'com.github.woodyhi.retrofit:composite-converter:0.1.3'
 }
