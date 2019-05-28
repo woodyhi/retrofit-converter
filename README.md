@@ -8,7 +8,9 @@
 #### Gradle依赖:
 
 ```
-implementation 'com.github.woodyhi.retrofit-converter:composite-converter:0.1.3'
+dependencies {
+    implementation 'com.github.woodyhi.retrofit:composite-converter:0.1.3'
+}
 ```
 
 
