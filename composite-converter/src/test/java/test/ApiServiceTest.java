@@ -4,16 +4,15 @@ import com.woodyhi.ApiService;
 import com.woodyhi.Util;
 import com.woodyhi.bean.User;
 import com.woodyhi.retrofit.converter.composite.CompositeConverterFactory;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,14 +24,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiServiceTest {
 
-    MockWebServer mockWebServer;
-    ApiService apiService;
+    static MockWebServer mockWebServer;
+    static ApiService apiService;
 
-    String nameinfo;
-    String helloInfo;
-    String sendResult;
-
-    public ApiServiceTest() {
+    @BeforeClass
+    public static void init() {
         Dispatcher dispatcher = new Dispatcher() {
             @Override
             public MockResponse dispatch(RecordedRequest recordedRequest) throws InterruptedException {
@@ -41,14 +37,28 @@ public class ApiServiceTest {
                         return new MockResponse().setHeader("Content-Type", "application/json")
                                 .setBody(Util.readSources("/user.txt"));
 
-                    case "/text/hello":
+                    case "/hello":
                         return new MockResponse().setBody("Hello World!");
 
-                    case "/send":
-                        return new MockResponse().setBody("send success");
+                    case "/uploadJson":
+                        System.out.println(recordedRequest.getPath());
+                        System.out.println(recordedRequest.getHeader("Content-Type"));
+                        String body = new String(recordedRequest.getBody().readByteArray());
+                        System.out.println(body);
+                        Assert.assertEquals(
+                                "{\"name\":\"Mark Twain\",\"age\":1000,\"sex\":\"male\"}",
+                                body);
+                        return new MockResponse().setBody("upload json success");
 
-                    case "/xml":
-                        return new MockResponse().setBody("receive xml");
+                    case "/uploadXml":
+                        System.out.println(recordedRequest.getPath());
+                        System.out.println(recordedRequest.getHeader("Content-Type"));
+                        String xmlBody = new String(recordedRequest.getBody().readByteArray());
+                        System.out.println(xmlBody);
+                        Assert.assertEquals(
+                                "<?xml version=\"1.0\" ?><user><age>1000</age><name>Mark Twain</name><sex>male</sex></user>",
+                                xmlBody);
+                        return new MockResponse().setBody("upload xml success");
                 }
                 return null;
             }
@@ -73,71 +83,61 @@ public class ApiServiceTest {
         apiService = retrofit.create(ApiService.class);
     }
 
+    String getUserResult;
+
     @Test
     public void testGetUser() {
         // 测试转换 响应结果 json -> javabean
         apiService.getUser("linkin")
-                .subscribe(user -> nameinfo = user.getName());
-        Assert.assertEquals("Linkin Park", nameinfo);
+                .subscribe(user -> getUserResult = user.toString());
+        Assert.assertEquals(
+                "User{name='Linkin Park', age=100, sex='male'}",
+                getUserResult);
     }
+
+    String helloResult;
 
     @Test
     public void testHello() {
         apiService.hello()
-                .subscribe(s -> helloInfo = s);
-        Assert.assertEquals("Hello World!", helloInfo);
+                .subscribe(s -> helloResult = s);
+        Assert.assertEquals("Hello World!", helloResult);
     }
 
+    String sendUserJsonResult;
+
     @Test
-    public void testSendUser() {
+    public void testSendUserJson() {
         User user = new User();
         user.setName("Mark Twain");
         user.setSex("male");
         user.setAge(1000);
 
         apiService.sendUserJson(user)
-                .subscribe(s -> sendResult = s);
+                .subscribe(
+                        s -> sendUserJsonResult = s,
+                        throwable -> System.out.println("onError:" + throwable.getMessage())
+                );
 
-        try {
-            RecordedRequest recordedRequest = mockWebServer.takeRequest();
-            System.out.println(recordedRequest.getRequestUrl().toString());
-            System.out.println(recordedRequest.getHeader("Content-Type"));
-            String body = new String(recordedRequest.getBody().readByteArray());
-            System.out.println(body);
-            Assert.assertEquals("{\"name\":\"Mark Twain\",\"age\":1000,\"sex\":\"male\"}", body);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        Assert.assertEquals("send success", sendResult);
+        Assert.assertEquals("upload json success", sendUserJsonResult);
     }
 
+    String sendUserXmlResult;
+
     @Test
-    public void testUserXml() {
+    public void testSendUserXml() {
         User user = new User();
         user.setName("Mark Twain");
         user.setSex("male");
         user.setAge(1000);
 
         apiService.sendUserXml(user)
-                .subscribe(s -> sendResult = s);
+                .subscribe(
+                        s -> sendUserXmlResult = s,
+                        throwable -> System.out.println("onError:" + throwable.getMessage())
+                );
 
-        try {
-            RecordedRequest recordedRequest = mockWebServer.takeRequest();
-            System.out.println(recordedRequest.getRequestUrl().toString());
-            System.out.println(recordedRequest.getHeader("Content-Type"));
-            String body = new String(recordedRequest.getBody().readByteArray());
-            System.out.println(body);
-            Assert.assertEquals("<user>\n" +
-                    "   <name>Mark Twain</name>\n" +
-                    "   <age>1000</age>\n" +
-                    "   <sex>male</sex>\n" +
-                    "</user>", body);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        Assert.assertEquals("receive xml", sendResult);
+        Assert.assertEquals("upload xml success", sendUserXmlResult);
     }
 
 }

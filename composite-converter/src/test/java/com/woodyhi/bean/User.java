@@ -1,9 +1,12 @@
 package com.woodyhi.bean;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * @author June.C
  * @date 2019-05-23
  */
+@XmlRootElement
 public class User {
     private String name;
     private int age;
@@ -31,5 +34,14 @@ public class User {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", sex='" + sex + '\'' +
+                '}';
     }
 }

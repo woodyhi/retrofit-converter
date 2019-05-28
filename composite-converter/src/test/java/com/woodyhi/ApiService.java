@@ -5,8 +5,8 @@ import com.woodyhi.retrofit.converter.composite.RequestConverter;
 import com.woodyhi.retrofit.converter.composite.ResponseConverter;
 
 import io.reactivex.Observable;
+import retrofit2.converter.jaxb.JaxbConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -22,16 +22,16 @@ public interface ApiService {
     Observable<User> getUser(@Path("username") String username);
 
     @ResponseConverter(ScalarsConverterFactory.class)
-    @GET("text/hello")
+    @GET("/hello")
     Observable<String> hello();
 
     @ResponseConverter(ScalarsConverterFactory.class)
-    @POST("send")
+    @POST("uploadJson")
     Observable<String> sendUserJson(@Body User user);
 
-    @RequestConverter(SimpleXmlConverterFactory.class)
+    @RequestConverter(JaxbConverterFactory.class)
     @ResponseConverter(ScalarsConverterFactory.class)
-    @POST("xml")
+    @POST("uploadXml")
     Observable<String> sendUserXml(@Body User user);
 
 }
